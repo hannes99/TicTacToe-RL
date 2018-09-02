@@ -1,14 +1,26 @@
 package ai;
 
-import java.util.Arrays;
+import game.TicTacToeDecision;
+
+import java.util.HashSet;
 
 public class TestMain {
     public static void main(String[] args) {
 
-        Integer[] a = new Integer[]{1, 2, 3, 4};
-        Integer[] b = new Integer[]{1, 5, 3, 4};
+        TicTacToeDecision d1 = new TicTacToeDecision(new Integer[]{1, 2, 3, 4, 5}, 7);
+        TicTacToeDecision d2 = new TicTacToeDecision(new Integer[]{1, 2, 3, 4, 5}, 7);
+        TicTacToeDecision d3 = new TicTacToeDecision(new Integer[]{1, 2, 3, 4, 5}, 8);
 
-        System.out.println(Arrays.equals(a, b));
+        d1.updateEstimation(100.0);
+
+        HashSet<TicTacToeDecision> hs = new HashSet<>();
+
+        hs.add(d1);
+        hs.add(d2);
+        hs.add(d3);
+
+        System.out.println(hs);
+
 //        System.out.println(new Integer[]{1,2,4,3}.hashCode());
 //        System.out.println(new Integer[]{1,2,4,3}.hashCode());
 //

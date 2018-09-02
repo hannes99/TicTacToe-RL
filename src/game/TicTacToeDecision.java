@@ -5,7 +5,7 @@ import ai.Decision;
 import java.util.Arrays;
 
 public class TicTacToeDecision extends Decision<Integer[], Integer> {
-    TicTacToeDecision(Integer[] situation, Integer action) {
+    public TicTacToeDecision(Integer[] situation, Integer action) {
         super(situation, action);
     }
 
@@ -23,5 +23,10 @@ public class TicTacToeDecision extends Decision<Integer[], Integer> {
     public boolean equals(Object obj) {
         TicTacToeDecision o = (TicTacToeDecision) obj;
         return Arrays.equals(getSituation(), o.getSituation()) && getAction().equals(o.getAction());
+    }
+
+    @Override
+    public String toString() {
+        return "S => " + Arrays.toString(getSituation()) + "   A => " + getAction();
     }
 }

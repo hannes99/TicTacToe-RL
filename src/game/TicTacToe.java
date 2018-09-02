@@ -37,7 +37,7 @@ public class TicTacToe extends Environment<Integer[], Integer> {
             if (field[i].equals(0))
                 avActions.add(i);
         }
-        getAIs().stream().findFirst().get().makeMove(field, avActions.toArray(new Integer[]{}));
+        getAIs().stream().findFirst().get().makeMove(field.clone(), avActions.toArray(new Integer[]{}));
     }
 
     public void reset() {
@@ -69,13 +69,13 @@ public class TicTacToe extends Environment<Integer[], Integer> {
         field[position] = X;
         for (Integer[] condition : winConditions) {
             if (field[condition[0]].equals(field[condition[1]]) && field[condition[0]].equals(field[condition[2]]) && !field[condition[0]].equals(E)) {
-                getAIs().stream().findFirst().get().giveReward(-100.0);
+                getAIs().stream().findFirst().get().giveReward(-500.0);
                 getAIs().stream().findFirst().get().reset();
                 return 1;
             }
         }
         if (!Arrays.asList(field).contains(E)) {
-            getAIs().stream().findFirst().get().giveReward(40);
+            getAIs().stream().findFirst().get().giveReward(250);
             getAIs().stream().findFirst().get().reset();
             return 2;
         }
@@ -91,12 +91,12 @@ public class TicTacToe extends Environment<Integer[], Integer> {
         if (checkWon()) {
             System.out.println("AI WON");
             gui.won("O");
-            ai.giveReward(100.0);
+            ai.giveReward(500.0);
             ai.reset();
         }
         if (checkDraw()) {
             gui.draw();
-            ai.giveReward(40.0);
+            ai.giveReward(250.0);
             ai.reset();
         }
         gui.aiPlays(action);

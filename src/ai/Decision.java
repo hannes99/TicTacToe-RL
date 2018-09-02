@@ -22,7 +22,7 @@ public abstract class Decision<S, A> implements Comparable {
         return situation;
     }
 
-    void updateEstimation(Double r) {
+    public void updateEstimation(Double r) {
         previouseRewards.add(r);
         estimatedValue = previouseRewards.stream().mapToDouble(a -> a).sum() / previouseRewards.size();
     }
@@ -32,15 +32,10 @@ public abstract class Decision<S, A> implements Comparable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        Decision<A, S> o = (Decision<A, S>) obj;
-        return action.equals(o.getAction()) && situation.equals(o.getSituation());
-    }
+    public abstract boolean equals(Object obj);
 
     @Override
-    public int hashCode() {
-        return (situation.hashCode() + action.hashCode() + "").hashCode();
-    }
+    public abstract int hashCode();
 
     @Override
     public int compareTo(Object obj) {
@@ -57,6 +52,6 @@ public abstract class Decision<S, A> implements Comparable {
 
     @Override
     public String toString() {
-        return "S => " + situation +"   A => " + action + "    EV => " + estimatedValue;
+        return "S => " + situation + "   A => " + action + "    EV => " + estimatedValue;
     }
 }

@@ -19,13 +19,14 @@ public class TicTacToeAI extends AIPlayer<Integer[], Integer> {
         for (Integer a : availableActions) {
             decisions.add(new TicTacToeDecision(s, a));
         }
+        decisions.forEach(System.out::println);
         System.out.println("size of decs.: " + decisions.size());
         int toSkip = 0;
         if (r.nextDouble() < exploreRatio) {
-            toSkip = r.nextInt(availableActions.length) - 1;
+            toSkip = Math.abs(r.nextInt(availableActions.length) - 1);
         }
         TicTacToeDecision decisionMade = (TicTacToeDecision) decisions.stream()
-                .filter(d -> d.getSituation().equals(s) && Arrays.asList(availableActions).contains(d.getAction()))
+                .filter(d -> Arrays.equals(d.getSituation(), s) && Arrays.asList(availableActions).contains(d.getAction()))
                 .skip(toSkip)
                 .sorted()
                 .findFirst()
