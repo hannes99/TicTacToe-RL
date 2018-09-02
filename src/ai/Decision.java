@@ -2,23 +2,23 @@ package ai;
 
 import java.util.ArrayList;
 
-public class Decision<S, A> implements Comparable {
+public abstract class Decision<S, A> implements Comparable {
     private A action;
     private S situation;
     private Double estimatedValue = 0.0;
     private ArrayList<Double> previouseRewards;
 
-    Decision(S situation, A action){
+    public Decision(S situation, A action) {
         this.previouseRewards = new ArrayList<>();
         this.situation = situation;
         this.action = action;
     }
 
-    A getAction(){
+    public A getAction() {
         return action;
     }
 
-    S getSituation(){
+    public S getSituation() {
         return situation;
     }
 
@@ -27,7 +27,7 @@ public class Decision<S, A> implements Comparable {
         estimatedValue = previouseRewards.stream().mapToDouble(a -> a).sum() / previouseRewards.size();
     }
 
-    double getValueEstimation(){
+    private double getValueEstimation() {
         return estimatedValue;
     }
 
@@ -39,7 +39,7 @@ public class Decision<S, A> implements Comparable {
 
     @Override
     public int hashCode() {
-        return Integer.parseInt(situation.hashCode()+action.hashCode()+"");
+        return (situation.hashCode() + action.hashCode() + "").hashCode();
     }
 
     @Override
