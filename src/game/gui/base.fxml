@@ -98,5 +98,23 @@
             <Text fx:id="whosTurn" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
+       <Text fx:id="aiValueOfLastAction" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="2"
+             GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+           <GridPane.margin>
+               <Insets right="20.0" top="100.0"/>
+           </GridPane.margin>
+           <font>
+               <Font size="23.0"/>
+           </font>
+       </Text>
+       <Text fx:id="aiValueForEveryAction" layoutX="590.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0"
+             GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+           <font>
+               <Font size="23.0"/>
+           </font>
+           <GridPane.margin>
+               <Insets bottom="100.0" right="20.0"/>
+           </GridPane.margin>
+       </Text>
    </children>
 </GridPane>

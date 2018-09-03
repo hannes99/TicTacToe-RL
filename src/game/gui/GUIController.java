@@ -14,6 +14,8 @@ public class GUIController {
     public Text whosTurn;
     public Text playerPoints;
     public Text aiPoints;
+    public Text aiValueForEveryAction;
+    public Text aiValueOfLastAction;
     private boolean wait = false;
     private Button[] buttons;
     private TicTacToe mainGame = null;
@@ -47,6 +49,14 @@ public class GUIController {
                 mainGame.aisTurn();
                 break;
         }
+    }
+
+    public void setActionsValue(String aiValueOfAction) {
+        this.aiValueForEveryAction.setText(aiValueOfAction);
+    }
+
+    public void setLastActionValue(String aiValueOfAction) {
+        this.aiValueOfLastAction.setText(aiValueOfAction);
     }
 
     public void won(String w) {

@@ -27,6 +27,6 @@ public class TicTacToeDecision extends Decision<Integer[], Integer> {
 
     @Override
     public String toString() {
-        return "S => " + Arrays.toString(getSituation()) + "   A => " + getAction();
+        return "S => " + Arrays.toString(getSituation()) + "   A => " + getAction() + "   EV => " + getEstimatedValue();
     }
 }

@@ -1,8 +1,9 @@
 package ai;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Decision<S, A> implements Comparable {
+public abstract class Decision<S, A> implements Comparable, Serializable {
     private A action;
     private S situation;
     private Double estimatedValue = 0.0;
@@ -12,6 +13,10 @@ public abstract class Decision<S, A> implements Comparable {
         this.previouseRewards = new ArrayList<>();
         this.situation = situation;
         this.action = action;
+    }
+
+    public Double getEstimatedValue() {
+        return estimatedValue;
     }
 
     public A getAction() {
@@ -41,10 +46,10 @@ public abstract class Decision<S, A> implements Comparable {
     public int compareTo(Object obj) {
         Decision<A, S> o = (Decision<A, S>) obj;
         int ret = 0;
-        if (estimatedValue > o.getValueEstimation()){
+        if (estimatedValue > o.getValueEstimation()) {
             ret = -1;
         }
-        if (estimatedValue < o.getValueEstimation()){
+        if (estimatedValue < o.getValueEstimation()) {
             ret = 1;
         }
         return ret;

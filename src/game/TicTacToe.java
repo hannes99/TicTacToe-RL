@@ -26,6 +26,7 @@ public class TicTacToe extends Environment<Integer[], Integer> {
     private Integer[] field = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     private Integer startSymbol = X;
     private GUIController gui;
+    private boolean playerStart = true;
 
     public TicTacToe(GUIController gui) {
         this.gui = gui;
@@ -43,6 +44,10 @@ public class TicTacToe extends Environment<Integer[], Integer> {
     public void reset() {
         field = new Integer[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
         getAIs().stream().findFirst().get().reset();
+        getAIs().stream().findFirst().get().saveToFile("ai");
+        playerStart = !playerStart;
+        if (!playerStart)
+            aisTurn();
     }
 
     private boolean checkWon() {
@@ -69,13 +74,13 @@ public class TicTacToe extends Environment<Integer[], Integer> {
         field[position] = X;
         for (Integer[] condition : winConditions) {
             if (field[condition[0]].equals(field[condition[1]]) && field[condition[0]].equals(field[condition[2]]) && !field[condition[0]].equals(E)) {
-                getAIs().stream().findFirst().get().giveReward(-500.0);
+                getReward(field, (TicTacToeAI) getAIs().stream().findFirst().get());
                 getAIs().stream().findFirst().get().reset();
                 return 1;
             }
         }
         if (!Arrays.asList(field).contains(E)) {
-            getAIs().stream().findFirst().get().giveReward(250);
+            getReward(field, (TicTacToeAI) getAIs().stream().findFirst().get());
             getAIs().stream().findFirst().get().reset();
             return 2;
         }
@@ -83,22 +88,70 @@ public class TicTacToe extends Environment<Integer[], Integer> {
     }
 
     @Override
-    public void playAI(Integer action, AIPlayer ai) {
+    public void playAI(Integer action, AIPlayer aiUncast) {
+        TicTacToeAI ai = (TicTacToeAI) aiUncast;
         if (field[action] != 0) {
             return;
         }
+
+        Integer[] before = field.clone();
         field[action] = O;
+
+        gui.aiPlays(action);
+        getReward(before, ai);
         if (checkWon()) {
             System.out.println("AI WON");
             gui.won("O");
-            ai.giveReward(500.0);
             ai.reset();
-        }
-        if (checkDraw()) {
+        } else if (checkDraw()) {
             gui.draw();
-            ai.giveReward(250.0);
             ai.reset();
         }
-        gui.aiPlays(action);
+
+    }
+
+    public void getReward(Integer[] before, TicTacToeAI ai) {
+        double retAll = 0.0;
+        double retLast = 0.0;
+        if (checkDraw())
+            retAll = 150.0;
+        for (Integer[] c : winConditions) {
+            Integer[] sNow = new Integer[]{field[c[0]], field[c[1]], field[c[2]]};
+            Integer[] sBefore = new Integer[]{before[c[0]], before[c[1]], before[c[2]]};
+            long freeNow = Arrays.stream(sNow).filter(n -> n.equals(0)).count();
+            long player = Arrays.stream(sNow).filter(n -> n.equals(X)).count();
+            long aiBefore = Arrays.stream(sBefore).filter(n -> n.equals(O)).count();
+            long aiNow = Arrays.stream(sNow).filter(n -> n.equals(O)).count();
+
+            System.out.println("CALCULATING REWARD(" + Arrays.toString(c) + "): FN: " + freeNow + ", P: " + player + ", AB: " + aiBefore + ", AN: " + aiNow);
+
+            if (freeNow == 1 && aiBefore == 1 && aiNow == 2) {
+                retLast += 100.0;
+            }
+            if (player == 2 && aiBefore == 0 && aiNow == 1) {
+                retLast += 150.0;
+            }
+            if (player == 2 && aiBefore == 0 && aiNow == 0) {
+                retLast -= 150.0;
+            }
+            if (freeNow == 1 && aiBefore == 2 && aiNow == 2) {
+                retLast += 160.0;
+            }
+            if (player == 3) {
+                retAll = -200.0;
+            }
+            if (aiNow == 3) {
+                retAll = 200.0;
+            }
+        }
+        if (retAll == 0 && false) {
+            ai.rewardExplicitLastAction(retLast);
+            gui.setLastActionValue("LAST: " + retLast);
+        } else {
+            gui.setLastActionValue("LAST: 0.0");
+
+        }
+        ai.giveReward(retAll);
+        gui.setActionsValue("ALL: " + retAll);
     }
 }

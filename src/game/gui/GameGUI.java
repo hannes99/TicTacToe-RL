@@ -19,7 +19,9 @@ public class GameGUI extends Application {
         Parent root = loader.load();
         controller = loader.getController();
         game = new TicTacToe(controller);
-        game.addAI(new TicTacToeAI(game));
+        TicTacToeAI ai = new TicTacToeAI(game);
+        ai.loadFromFile("ai");
+        game.addAI(ai);
         controller.setMainGame(game);
         primaryStage.setTitle("TicTacToe");
         primaryStage.minWidthProperty().setValue(320.0);
